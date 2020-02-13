@@ -9,6 +9,7 @@ from django.utils.encoding import force_str
 from django.utils.text import slugify
 
 WAGTAIL_APPEND_SLASH = getattr(settings, 'WAGTAIL_APPEND_SLASH', True)
+WAGTAIL_GENERATE_FULL_URLS = getattr(settings, 'WAGTAIL_GENERATE_FULL_URLS', False)
 
 
 def camelcase_to_underscore(str):

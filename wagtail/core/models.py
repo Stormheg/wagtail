@@ -30,7 +30,7 @@ from wagtail.core.query import PageQuerySet, TreeQuerySet
 from wagtail.core.signals import page_published, page_unpublished
 from wagtail.core.sites import get_site_for_hostname
 from wagtail.core.url_routing import RouteResult
-from wagtail.core.utils import WAGTAIL_APPEND_SLASH, camelcase_to_underscore, resolve_model_string
+from wagtail.core.utils import WAGTAIL_APPEND_SLASH, WAGTAIL_GENERATE_FULL_URLS, camelcase_to_underscore, resolve_model_string
 from wagtail.search import index
 
 
@@ -842,7 +842,7 @@ class Page(AbstractPage, index.Indexed, ClusterableModel, metaclass=PageBase):
 
         site_id, root_url, page_path = url_parts
 
-        if (current_site is not None and site_id == current_site.id) or len(self._get_site_root_paths(request)) == 1:
+        if (current_site is not None and site_id == current_site.id) or (len(self._get_site_root_paths(request)) == 1 and not WAGTAIL_GENERATE_FULL_URLS):
             # the site matches OR we're only running a single site, so a local URL is sufficient
             return page_path
         else:
