@@ -1,6 +1,6 @@
 import functools
 
-from django.conf.urls import url, include
+from django.urls import re_path, include
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 from django.http import Http404
@@ -18,51 +18,51 @@ from wagtail.utils.urlpatterns import decorate_urlpatterns
 
 
 urlpatterns = [
-    url(r'^$', home.home, name='wagtailadmin_home'),
+    re_path(r'^$', home.home, name='wagtailadmin_home'),
 
-    url(r'^test404/$', TemplateView.as_view(template_name='wagtailadmin/404.html')),
+    path('test404/', TemplateView.as_view(template_name='wagtailadmin/404.html')),
 
-    url(r'api/', include(api_urls)),
+    path('api/', include(api_urls)),
 
-    url(r'^failwhale/$', home.error_test, name='wagtailadmin_error_test'),
-
-    # TODO: Move into wagtailadmin_pages namespace
-    url(r'^pages/$', pages.index, name='wagtailadmin_explore_root'),
-    url(r'^pages/(\d+)/$', pages.index, name='wagtailadmin_explore'),
-
-    url(r'^pages/', include(wagtailadmin_pages_urls, namespace='wagtailadmin_pages')),
+    path('failwhale/', home.error_test, name='wagtailadmin_error_test'),
 
     # TODO: Move into wagtailadmin_pages namespace
-    url(r'^choose-page/$', chooser.browse, name='wagtailadmin_choose_page'),
-    url(r'^choose-page/(\d+)/$', chooser.browse, name='wagtailadmin_choose_page_child'),
-    url(r'^choose-page/search/$', chooser.search, name='wagtailadmin_choose_page_search'),
-    url(r'^choose-external-link/$', chooser.external_link, name='wagtailadmin_choose_page_external_link'),
-    url(r'^choose-email-link/$', chooser.email_link, name='wagtailadmin_choose_page_email_link'),
-    url(r'^choose-phone-link/$', chooser.phone_link, name='wagtailadmin_choose_page_phone_link'),
-    url(r'^choose-anchor-link/$', chooser.anchor_link, name='wagtailadmin_choose_page_anchor_link'),
+    path(r'^pages/$', pages.index, name='wagtailadmin_explore_root'),
+    path(r'^pages/(\d+)/$', pages.index, name='wagtailadmin_explore'),
 
-    url(r'^tag-autocomplete/$', tags.autocomplete, name='wagtailadmin_tag_autocomplete'),
+    path(r'^pages/', include(wagtailadmin_pages_urls, namespace='wagtailadmin_pages')),
 
-    url(r'^collections/', include(wagtailadmin_collections_urls, namespace='wagtailadmin_collections')),
+    # TODO: Move into wagtailadmin_pages namespace
+    path(r'^choose-page/$', chooser.browse, name='wagtailadmin_choose_page'),
+    path(r'^choose-page/(\d+)/$', chooser.browse, name='wagtailadmin_choose_page_child'),
+    path(r'^choose-page/search/$', chooser.search, name='wagtailadmin_choose_page_search'),
+    path(r'^choose-external-link/$', chooser.external_link, name='wagtailadmin_choose_page_external_link'),
+    path(r'^choose-email-link/$', chooser.email_link, name='wagtailadmin_choose_page_email_link'),
+    path(r'^choose-phone-link/$', chooser.phone_link, name='wagtailadmin_choose_page_phone_link'),
+    path(r'^choose-anchor-link/$', chooser.anchor_link, name='wagtailadmin_choose_page_anchor_link'),
 
-    url(r'^reports/', include(wagtailadmin_reports_urls, namespace='wagtailadmin_reports')),
+    path(r'^tag-autocomplete/$', tags.autocomplete, name='wagtailadmin_tag_autocomplete'),
 
-    url(r'^account/$', account.account, name='wagtailadmin_account'),
-    url(r'^account/change_password/$', account.change_password, name='wagtailadmin_account_change_password'),
-    url(r'^account/change_email/$', account.change_email, name='wagtailadmin_account_change_email'),
-    url(r'^account/change_name/$', account.change_name, name='wagtailadmin_account_change_name'),
-    url(
+    path(r'^collections/', include(wagtailadmin_collections_urls, namespace='wagtailadmin_collections')),
+
+    path(r'^reports/', include(wagtailadmin_reports_urls, namespace='wagtailadmin_reports')),
+
+    path(r'^account/$', account.account, name='wagtailadmin_account'),
+    path(r'^account/change_password/$', account.change_password, name='wagtailadmin_account_change_password'),
+    path(r'^account/change_email/$', account.change_email, name='wagtailadmin_account_change_email'),
+    path(r'^account/change_name/$', account.change_name, name='wagtailadmin_account_change_name'),
+    path(
         r'^account/notification_preferences/$',
         account.notification_preferences,
         name='wagtailadmin_account_notification_preferences'
     ),
-    url(r'account/change_avatar/$', account.change_avatar, name='wagtailadmin_account_change_avatar'),
-    url(
+    path(r'account/change_avatar/$', account.change_avatar, name='wagtailadmin_account_change_avatar'),
+    path(
         r'^account/language_preferences/$',
         account.language_preferences,
         name='wagtailadmin_account_language_preferences'
     ),
-    url(
+    path(
         r'^account/current_time_zone/$',
         account.current_time_zone,
         name='wagtailadmin_account_current_time_zone'

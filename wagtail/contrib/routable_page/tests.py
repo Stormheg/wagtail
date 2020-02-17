@@ -307,7 +307,7 @@ class TestRoutablePageTemplateTagForSecondSiteAtDifferentRoot(TestCase):
     def test_templatetag_reverse_external_view_without_append_slash(self):
         with mock.patch('wagtail.core.models.WAGTAIL_APPEND_SLASH', False):
             url = routablepageurl(self.context, self.routable_page,
-                                  'external_view', 'joe-bloggs')
-            expected = 'http://localhost/' + self.routable_page.slug + '/' + 'external/joe-bloggs/'
+                                  'external_view_no_slash', 'joe-bloggs')
+            expected = 'http://localhost/' + self.routable_page.slug + '/' + 'external-no-slash/joe-bloggs'
 
         self.assertEqual(url, expected)

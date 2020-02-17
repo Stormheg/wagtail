@@ -26,6 +26,11 @@ class RoutablePageTest(RoutablePage):
     def external_view(self, *args, **kwargs):
         return routable_page_external_view(*args, **kwargs)
 
+    @route(r'^external-no-slash/(.+)$')
+    @route(r'^external-no-slash-no-arg$')
+    def external_view_no_slash(self, *args, **kwargs):
+        return routable_page_external_view(*args, **kwargs)
+
     # By default, the method name would be used as the url name but when the
     # "name" kwarg is specified, this should override the default.
     @route(r'^override-name-test/$', name='name_overridden')

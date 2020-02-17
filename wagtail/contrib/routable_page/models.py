@@ -5,6 +5,7 @@ from django.urls import URLResolver
 from django.urls.resolvers import RegexPattern
 
 from wagtail.core.models import Page
+from wagtail.core.utils import WAGTAIL_APPEND_SLASH
 from wagtail.core.url_routing import RouteResult
 
 
@@ -100,15 +101,20 @@ class RoutablePageMixin:
         This hooks the subpage URLs into Wagtail's routing.
         """
         if self.live:
-            try:
-                path = '/'
-                if path_components:
-                    path += '/'.join(path_components) + '/'
+            path = '/'
+            if path_components:
+                path += '/'.join(path_components)
 
+            try: 
                 view, args, kwargs = self.resolve_subpage(path)
                 return RouteResult(self, args=(view, args, kwargs))
             except Http404:
-                pass
+                try:
+                    path += '/'
+                    view, args, kwargs = self.resolve_subpage(path)
+                    return RouteResult(self, args=(view, args, kwargs))
+                except Http404:
+                    pass
 
         return super().route(request, path_components)
 
