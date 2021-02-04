@@ -51,7 +51,8 @@ Compile the assets:
 
     $ npm run build
 
-Any Wagtail sites you start up in this virtualenv will now run against this development instance of Wagtail.  We recommend using the `Wagtail Bakery demo site <https://github.com/wagtail/bakerydemo/>`_ as a basis for developing Wagtail. Keep in mind that the setup steps for a Wagtail site may include installing a release version of Wagtail, which will override the development version you've just set up. In this case, you should install the site before running the ``pip install -e`` step, or re-run that step after the site is installed.
+Any Wagtail sites you start up in this virtualenv will now run against this development instance of Wagtail.  We recommend using the `Wagtail Bakery demo site <https://github.com/wagtail/bakerydemo/>`_ as a basis for developing Wagtail. Keep in mind that the setup steps for a Wagtail site may include installing a release version of Wagtail, which will override the development version you've just set up. In this case, you should install the site before running the ``
+-e`` step, or re-run that step after the site is installed.
 
 .. _testing:
 
@@ -257,7 +258,7 @@ The Wagtail documentation is built by Sphinx. To install Sphinx and compile the 
 
     $ cd /path/to/wagtail
     $ # Install the documentation dependencies
-    $ pip install -e .[docs]
+    $ pip install -e '.[docs]'
     $ # Compile the docs
     $ cd docs/
     $ make html
