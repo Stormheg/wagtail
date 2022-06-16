@@ -13,16 +13,39 @@
         <h2>{% trans "Latest images" %}</h2>
     {% endif %}
 
-    <ul class="listing horiz images chooser">
-        {% for image in images %}
+    {% if multiple %}
+    <form id="image-chooser-multiple-form" action="{% url 'wagtailimages:multiple_images_chosen' %}" method="get">
+        <ul class="listing horiz images chooser">
+            {% for image in images %}
             <li>
-                <a class="image-choice" title="{% if collections %}{{ image.collection.name }} » {% endif %}{{ image.title }}" href="{% if will_select_format %}{% url 'wagtailimages:chooser_select_format' image.id %}{% else %}{% url 'wagtailimages:image_chosen' image.id %}{% endif %}">
+                {# FIXME: when you tick a box and then move through the pagination, the checkbox disappears and its state is not remembered #}
+                <input type="checkbox" name="image_id" value={{ image.id }}>
+                <div class="image-choice" title="{% if collections %}{{ image.collection.name }} » {% endif %}{{ image.title }}" href="{% if will_select_format %}{% url 'wagtailimages:chooser_select_format' image.id %}{% else %}{% url 'wagtailimages:image_chosen' image.id %}{% endif %}">
                     <div class="image">{% image image max-165x165 class="show-transparency" %}</div>
                     <h3>{{ image.title|ellipsistrim:60 }}</h3>
-                </a>
+                </div>
             </li>
+            {% endfor %}
+        </ul>
+    </form>
+    {% else %}
+    <ul class="listing horiz images chooser">
+        {% for image in images %}
+        <li>
+            <a class="image-choice" title="{% if collections %}{{ image.collection.name }} » {% endif %}{{ image.title }}" href="{% if will_select_format %}{% url 'wagtailimages:chooser_select_format' image.id %}{% else %}{% url 'wagtailimages:image_chosen' image.id %}{% endif %}">
+                <div class="image">{% image image max-165x165 class="show-transparency" %}</div>
+                <h3>{{ image.title|ellipsistrim:60 }}</h3>
+            </a>
+        </li>
         {% endfor %}
     </ul>
+    {% endif %}
 
     {% include "wagtailadmin/shared/pagination_nav.html" with items=images linkurl='wagtailimages:chooser_results' %}
+
+    {% if multiple %}
+    <button type="submit" type="button" class="button" form="image-chooser-multiple-form">
+        {% blocktrans trimmed %}Select items{% endblocktrans %}
+    </button>
+    {% endif %}
 {% endif %}

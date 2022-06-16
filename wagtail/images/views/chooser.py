@@ -65,7 +65,11 @@ class BaseChooseView(View):
             images = images.filter(collection=collection_id)
 
         self.is_searching = False
+        self.multiple = False
         self.q = None
+
+        if "multiple" in request.GET:
+            self.multiple = True
 
         if "q" in request.GET:
             self.search_form = SearchForm(request.GET)
@@ -90,6 +94,7 @@ class BaseChooseView(View):
         return {
             "images": self.images,
             "is_searching": self.is_searching,
+            "multiple": self.multiple,
             "query_string": self.q,
             "will_select_format": self.request.GET.get("select_format"),
         }
@@ -144,6 +149,26 @@ class ChooseResultsView(BaseChooseView):
         return TemplateResponse(
             self.request, "wagtailimages/chooser/results.html", self.get_context_data()
         )
+
+
+def multiple_images_chosen(request):
+    image_model = get_image_model()
+
+    image_ids = request.GET.getlist("image_id", default=[])
+
+    images = image_model.objects.filter(id__in=image_ids)
+
+    results = []
+    for img in images:
+        results.append(get_image_result_data(img))
+
+    return render_modal_workflow(
+        request,
+        None,
+        None,
+        None,
+        json_data={"step": "multiple_images_chosen", "result": results},
+    )
 
 
 def image_chosen(request, image_id):

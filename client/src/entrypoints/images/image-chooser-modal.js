@@ -36,15 +36,34 @@ function ajaxifyImageUploadForm(modal) {
   });
 }
 
+function ajaxifyMultiSelectForm(modal) {
+  $('#image-chooser-multiple-form', modal.body).on('submit', (event) => {
+    event.preventDefault();
+    const form = $(event.currentTarget);
+    const params = new URLSearchParams(form.serialize())
+    modal.loadUrl(`${event.currentTarget.action}?${params.toString()}`);
+    return false;
+  });
+}
+
 window.IMAGE_CHOOSER_MODAL_ONLOAD_HANDLERS = {
   chooser: (modal) => {
     let searchController;
 
+    // Check if multiselect is enabled for this modal
+    let multiSelect = false;
+    if ($('#image-results').data('multiselect')) multiSelect = true;
+    if(multiSelect) ajaxifyMultiSelectForm(modal);
+
     function ajaxifyLinks(context) {
-      $('.listing a', context).on('click', (event) => {
-        modal.loadUrl(event.currentTarget.href);
-        return false;
-      });
+      // Disable click-to-choose image when in multiselect mode.
+      // TODO: tick the checkbox instead.
+      if(!multiSelect) {
+        $('.listing a', context).on('click', (event) => {
+          modal.loadUrl(event.currentTarget.href);
+          return false;
+        });
+      }
 
       $('.pagination a', context).on('click', (event) => {
         searchController.fetchResults(event.currentTarget.href);
@@ -78,6 +97,12 @@ window.IMAGE_CHOOSER_MODAL_ONLOAD_HANDLERS = {
     // Reinitialize tabs to hook up tab event listeners in the modal
     initTabs();
   },
+  // TODO: another step handler for multiple chosen
+  multiple_images_chosen: (modal, jsonData) => {
+    modal.respond('multipleImagesChosen', jsonData.result);
+    modal.close();
+  },
+
   image_chosen: (modal, jsonData) => {
     modal.respond('imageChosen', jsonData.result);
     modal.close();

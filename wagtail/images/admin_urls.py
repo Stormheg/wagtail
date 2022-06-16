@@ -39,6 +39,7 @@ urlpatterns = [
         "chooser/results/", chooser.ChooseResultsView.as_view(), name="chooser_results"
     ),
     path("chooser/<int:image_id>/", chooser.image_chosen, name="image_chosen"),
+    path("chooser/multiple_chosen/", chooser.multiple_images_chosen, name="multiple_images_chosen"),
     path("chooser/upload/", chooser.chooser_upload, name="chooser_upload"),
     path(
         "chooser/<int:image_id>/select_format/",

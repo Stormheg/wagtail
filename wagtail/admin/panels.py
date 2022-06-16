@@ -929,6 +929,12 @@ class InlinePanel(Panel):
             context["can_order"] = self.formset.can_order
             return context
 
+# TODO subclass this panel for a variation that allows multiple
+class MultiSelectImageInlinePanel(InlinePanel):
+
+    class BoundPanel(InlinePanel.BoundPanel):
+        template_name = "wagtailadmin/panels/multi_select_inline_panel.html"
+
 
 # This allows users to include the publishing panel in their own per-model override
 # without having to write these fields out by hand, potentially losing 'classname'

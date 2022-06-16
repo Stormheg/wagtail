@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 function buildExpandingFormset(prefix, opts = {}) {
   const addButton = $('#' + prefix + '-ADD');
+  const bulkButton = $('#' + prefix + '-BULKADD');
   const formContainer = $('#' + prefix + '-FORMS');
   const totalFormsInput = $('#' + prefix + '-TOTAL_FORMS');
   let formCount = parseInt(totalFormsInput.val(), 10);
@@ -34,5 +35,25 @@ function buildExpandingFormset(prefix, opts = {}) {
     formCount++;
     totalFormsInput.val(formCount);
   });
+
+  if (bulkButton) {
+    // eslint-disable-next-line consistent-return
+    bulkButton.on('click', () => {
+      if (bulkButton.hasClass('disabled')) return false;
+      const url = bulkButton.data('imageChooserModalUrl')
+      // eslint-disable-next-line no-undef
+      ModalWorkflow({
+        url: url,
+        // eslint-disable-next-line no-undef
+        onload: IMAGE_CHOOSER_MODAL_ONLOAD_HANDLERS,
+        responses: {
+          multipleImagesChosen: (result) => {
+            console.log("Model closed; got data", result);
+            // TODO: at this point result contains a list of images. Now use that information to populate new child InlinePanels
+          },
+        },
+      });
+    });
+  }
 }
 window.buildExpandingFormset = buildExpandingFormset;

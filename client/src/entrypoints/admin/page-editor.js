@@ -125,11 +125,14 @@ function InlinePanel(opts) {
         '.deleted',
       );
       const addButton = $('#' + opts.formsetPrefix + '-ADD');
+      const bulkButton = $('#' + opts.formsetPrefix + '-BULKADD');
 
       if (forms.length >= opts.maxForms) {
         addButton.addClass('disabled');
+        bulkButton.addClass('disabled');
       } else {
         addButton.removeClass('disabled');
+        bulkButton.removeClass('disabled');
       }
     }
   };

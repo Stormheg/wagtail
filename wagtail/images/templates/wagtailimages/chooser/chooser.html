@@ -7,7 +7,8 @@
 {{ uploadform.media.css }}
 
 <div class="w-tabs" data-tabs data-tabs-disable-url>
-    {% if uploadform %}
+    {# Disable the upload tab when selecting multiple images, we are not equipped to handle uploading multiple images yet #}
+    {% if uploadform and not multiple %}
         {# Using nice-padding and full width class until the modal header is restyled #}
         <div role="tablist" class="w-tabs__list w-w-full nice-padding">
             {% trans "Search" as search_text %}
@@ -42,11 +43,11 @@
                     {% endif %}
                 </ul>
             </form>
-            <div id="image-results">
+            <div id="image-results" {% if multiple %}data-multiselect="true"{% endif %}>
                 {% include "wagtailimages/chooser/results.html" %}
             </div>
         </section>
-        {% if uploadform %}
+        {% if uploadform and not multiple %}
             {% include "wagtailimages/chooser/upload_form.html" with form=uploadform will_select_format=will_select_format %}
         {% endif %}
     </div>
